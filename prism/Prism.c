@@ -1,49 +1,47 @@
-#include <stdio.h> 
+#include <stdio.h>
 #include <stdlib.h>
 #define INF 999999
 
-
-int minKey(int key[], int mstSet[], int V) { 
-    int min = INF, min_index, v;
-    for (v = 0; v < V; v++) 
-        if (mstSet[v] == 0 && key[v] < min) {
-            min = key[v];
-            min_index = v;
-        }
-    return min_index; 
-} 
-
-
 int printMSTree(int parent[], int **graph, int V) {
     int cost = 0, i;
-    printf("Edge \tWeight\n"); 
+    printf("Edge \tWeight\n");
     for (i = 1; i < V; i++) {
         printf("%d %d \t%d\n", parent[i], i, graph[i][parent[i]]);
         cost += graph[i][parent[i]];
     }
     printf("Cost: %d.\n", cost);
-} 
+}
+
+int minKey(int key[], int mstSet[], int V) {
+    int min = INF, min_index, v;
+    for (v = 0; v < V; v++)
+        if (mstSet[v] == 0 && key[v] < min) {
+            min = key[v];
+            min_index = v;
+        }
+    return min_index;
+}
 
 
-void primMST(int **graph, int V) { 
-    int parent[V]; 
-    int key[V]; 
-    int mstSet[V]; 
+void primMST(int **graph, int V) {
+    int parent[V];
+    int key[V];
+    int mstSet[V];
     int i, count, u, v;
-    for (i = 0; i < V; i++) 
-        key[i] = INF, mstSet[i] = 0; 
-  
-    key[0] = 0; 
+    for (i = 0; i < V; i++)
+        key[i] = INF, mstSet[i] = 0;
+
+    key[0] = 0;
     parent[0] = -1;
-    for (count = 0; count < V - 1; count++) { 
-        u = minKey(key, mstSet,V); 
-        mstSet[u] = 1; 
-        for (v = 0; v < V; v++) 
-            if (graph[u][v] && mstSet[v] == 0 && graph[u][v] < key[v]) 
-                parent[v] = u, key[v] = graph[u][v]; 
+    for (count = 0; count < V - 1; count++) {
+        u = minKey(key, mstSet,V);
+        mstSet[u] = 1;
+        for (v = 0; v < V; v++)
+            if (graph[u][v] && mstSet[v] == 0 && graph[u][v] < key[v])
+                parent[v] = u, key[v] = graph[u][v];
     }
-    printMSTree(parent, graph, V); 
-} 
+    printMSTree(parent, graph, V);
+}
 
 int setAdgecencyMatrix(int** adj, int edges, int vertices){
     int i, j, x , y, w;
@@ -68,9 +66,9 @@ int printAdjacencyMatrix(int **adj, int V){
         printf("\n");
     }
 }
-  
-int main() 
-{ 
+
+int main()
+{
     int **adj,i,j,v ,e, bi;
     printf("Number of vertices: ");
     scanf("%d",&v);
@@ -89,7 +87,7 @@ int main()
     printf("Enter 2 vertices and correspoding weight for each edge:\n");
     setAdgecencyMatrix(adj, e ,v);
     printAdjacencyMatrix(adj, v);
-    primMST(adj, v); 
-    return 0; 
-} 
+    primMST(adj, v);
+    return 0;
+}
 
